@@ -48,7 +48,6 @@ public class RegisterActivity extends AppCompatActivity {
                     boolean success = databaseHelper.registerUser(name, email, password);
                     if (success) {
                         Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
-                        // Faça algo após o cadastro bem-sucedido, como abrir a próxima atividade.
                     } else {
                         Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                     }
