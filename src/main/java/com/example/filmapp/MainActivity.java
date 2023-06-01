@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (databaseHelper.isValidUser(inputUsername, inputPassword)) {
                     Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    // Faça algo após o login bem-sucedido, como abrir a próxima atividade.
                 } else {
                     Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                 }
