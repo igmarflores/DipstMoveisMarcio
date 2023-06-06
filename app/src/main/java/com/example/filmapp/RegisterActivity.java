@@ -16,7 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button buttonRegister;
 
     // Banco de dados de exemplo
-    private DatabaseHelper databaseHelper;
+    //private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonRegister);
 
         // Inicializar o banco de dados
-        databaseHelper = new DatabaseHelper(this);
+        //databaseHelper = new DatabaseHelper(this);
 
         buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,9 +39,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = editTextEmail.getText().toString();
                 String password = editTextPassword.getText().toString();
                 String confirmPassword = editTextConfirmPassword.getText().toString();
-                
+
                 // Lembrar de mudar as frases depois
-                if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                /*if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Completar campo", Toast.LENGTH_SHORT).show();
                 } else if (!password.equals(confirmPassword)) {
                     Toast.makeText(RegisterActivity.this, "Senha sem match", Toast.LENGTH_SHORT).show();
@@ -53,6 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Registro falhou", Toast.LENGTH_SHORT).show();
                     }
                 }
+                */
             }
         });
     }
