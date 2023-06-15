@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.database.sqlite.SQLiteDatabase;
 import com.example.filmapp.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonLogin;
 
     // Banco de dados ainda não implementado
-    private DatabaseHelper databaseHelper;
+    //private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         buttonLogin = findViewById(R.id.buttonLogin);
 
         // Inicializar o banco de dados
-        databaseHelper = new DatabaseHelper(this);
+        //databaseHelper = new DatabaseHelper(this);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
                 String inputUsername = editTextUsername.getText().toString();
                 String inputPassword = editTextPassword.getText().toString();
 
-                if (databaseHelper.isValidUser(inputUsername, inputPassword)) {
+                /*if (databaseHelper.isValidUser(inputUsername, inputPassword)) {
                     Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
     }
