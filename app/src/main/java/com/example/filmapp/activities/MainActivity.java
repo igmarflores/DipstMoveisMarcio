@@ -1,6 +1,8 @@
-package com.example.filmapp;
+package com.example.filmapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +17,6 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private Button buttonLogin;
 
-    // Banco de dados ainda não implementado
-    //private DatabaseHelper databaseHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,21 +26,15 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
 
-        // Inicializar o banco de dados
-        //databaseHelper = new DatabaseHelper(this);
-
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String inputUsername = editTextUsername.getText().toString();
                 String inputPassword = editTextPassword.getText().toString();
-
-                /*if (databaseHelper.isValidUser(inputUsername, inputPassword)) {
-                    Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-                }*/
+                Intent it = new Intent(MainActivity.this, MovieActivity.class);
+                startActivity(it);
             }
         });
+
     }
 }
