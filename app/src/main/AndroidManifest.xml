@@ -12,13 +12,13 @@
         android:theme="@style/Theme.Filmapp"
         tools:targetApi="31">
         <activity
-            android:name=".MovieActivity"
+            android:name=".activities.MovieActivity"
             android:exported="false" />
         <activity
-            android:name=".UserActivity"
+            android:name=".activities.UserActivity"
             android:exported="false" />
         <activity
-            android:name=".Catalogo"
+            android:name=".activities.Catalogo"
             android:exported="false" />
         <activity
             android:name=".activities.RegisterActivity"

@@ -31,6 +31,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String inputUsername = editTextUsername.getText().toString();
                 String inputPassword = editTextPassword.getText().toString();
+                //Intent it = new Intent(MainActivity.this, MovieActivity.class);
+                //startActivity(it);
+            }
+        });
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //String inputUsername = editTextUsername.getText().toString();
+                //String inputPassword = editTextPassword.getText().toString();
                 Intent it = new Intent(MainActivity.this, MovieActivity.class);
                 startActivity(it);
             }

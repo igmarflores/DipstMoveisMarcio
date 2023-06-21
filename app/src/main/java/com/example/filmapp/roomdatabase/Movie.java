@@ -3,7 +3,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "Filme")
 public class Movie {
     @PrimaryKey(autoGenerate = true)
     int id;

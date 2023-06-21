@@ -9,8 +9,9 @@ import com.example.filmapp.roomdatabase.MovieDAO;
 public abstract class MovieDataBase extends RoomDatabase{
 
     private static MovieDataBase INSTANCE;
-    public MovieDAO movieDAO;
+    public abstract MovieDAO movieDAO();
 
+    /*
     public static MovieDataBase getDataBase(Context context){
         if(INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
@@ -18,5 +19,5 @@ public abstract class MovieDataBase extends RoomDatabase{
         }
         return INSTANCE;
     }
-
+    */
 }
