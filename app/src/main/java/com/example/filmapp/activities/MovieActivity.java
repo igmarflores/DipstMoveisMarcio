@@ -1,47 +1,96 @@
 package com.example.filmapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
-import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import com.example.filmapp.R;
-import com.example.filmapp.roomdatabase.Movie;
-import com.example.filmapp.roomdatabase.MovieDataBase;
+import androidx.appcompat.app.AppCompatActivity;
 
-@SuppressWarnings("ALL")
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MovieActivity extends AppCompatActivity {
-    public EditText titulo, ano;
-    public Button btnAdicionar;
-    public TextView addFilme;
-    public MovieDataBase movieDB;
+
+    private ListView movieListView;
+    private List<String> movieTitles = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie);
-        titulo = findViewById(R.id.titulo);
-        ano = findViewById(R.id.ano);
-        addFilme = findViewById(R.id.addFilme);
-        btnAdicionar = findViewById(R.id.btnAdicionar);
-        Intent intent = getIntent();
+        setContentView(R.layout.activity_movie_catalog);
 
-        movieDB = Room.databaseBuilder(getApplicationContext(),
-                MovieDataBase.class,"Catalogo de filmes").allowMainThreadQueries().build();
-        btnAdicionar.setOnClickListener(new View.OnClickListener() {
+        movieListView = findViewById(R.id.movieListView);
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, movieTitles);
+        movieListView.setAdapter(adapter);
+
+        movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                String title = titulo.getText().toString();
-                String year = ano.getText().toString();
-                int id = 0;
-                Movie movie = new Movie(id,title,year);
-                movieDB.movieDAO().insertAll(movie);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMovie = movieTitles.get(position);
+                Toast.makeText(MovieActivity.this, "Você selecionou: " + selectedMovie, Toast.LENGTH_SHORT).show();
             }
         });
+
+        new FetchMoviesTask().execute();
+    }
+
+    private class FetchMoviesTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/movie/popular?api_key=CHAVE")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    return response.body().string();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response != null) {
+                try {
+                    JSONObject json = new JSONObject(response);
+                    JSONArray results = json.getJSONArray("results");
+
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject movie = results.getJSONObject(i);
+                        String title = movie.getString("title");
+                        movieTitles.add(title);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(MovieActivity.this, "Falha ao obter filmes.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
