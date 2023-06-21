@@ -11,7 +11,7 @@ public class Movie {
     String titulo;
     @ColumnInfo(name = "ano")
     String ano;
-
+    public Movie(){}
     public Movie(int id, String titulo, String ano) {
         this.id = id;
         this.titulo = titulo;
