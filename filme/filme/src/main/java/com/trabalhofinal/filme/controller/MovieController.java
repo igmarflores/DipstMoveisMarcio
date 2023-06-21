@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trabalhofinal.filme.exception.MovieNotFoundException;
-import com.trabalhofinal.filme.exception.UserNotFoundException;
+import com.trabalhofinal.filme.exception.UsuarioNotFoundException;
 import com.trabalhofinal.filme.model.Movie;
-import com.trabalhofinal.filme.model.User;
+import com.trabalhofinal.filme.model.Usuario;
 import com.trabalhofinal.filme.service.MovieService;
-import com.trabalhofinal.filme.service.UserService;
+import com.trabalhofinal.filme.service.UsuarioService;
 
 @CrossOrigin
 @RestController
@@ -32,12 +32,12 @@ public class MovieController {
     private MovieService movieService;
 
     @Autowired
-    private UserService userService;
+    private UsuarioService userService;
 
     @PostMapping("/relacionar")
     public ResponseEntity<Movie> relacionarMovie(@RequestBody Movie movie, @RequestParam("userId") Long userId)
-            throws UserNotFoundException {
-        User user = userService.buscarUserPorId(userId); // Busca o usuário pelo ID
+            throws UsuarioNotFoundException {
+        Usuario user = userService.buscarUserPorId(userId); // Busca o usuário pelo ID
         movie.getUsers().add(user); // Associa o usuário ao filme
         Movie movieGravado = movieService.criarMovie(movie); // Salva o filme
         return new ResponseEntity<>(movieGravado, HttpStatus.CREATED);
@@ -49,21 +49,21 @@ public class MovieController {
         return new ResponseEntity<>(movieGravado, HttpStatus.CREATED);
     }
 
-    // http://localhost:8080/api/movies/1
-    @GetMapping("buscar/{id}")
-    public ResponseEntity<Movie> buscarMoviePorId(@PathVariable("id") Long id) throws MovieNotFoundException {
-        Movie movieGravado = movieService.buscarMoviePorId(id);
-        return new ResponseEntity<>(movieGravado, HttpStatus.OK);
-    }
-
-    // http://localhost:8080/api/movies
+    // http://localhost:8080/movies
     @GetMapping
     public ResponseEntity<List<Movie>> buscarTodosMovies() {
         List<Movie> movies = movieService.buscarTodosMovies();
         return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
-    // http://localhost:8080/api/movies/1
+    // http://localhost:8080/movies/1
+    @GetMapping("buscar/{id}")
+    public ResponseEntity<Movie> buscarMoviePorId(@PathVariable("id") Long id) throws MovieNotFoundException {
+        Movie movieGravado = movieService.buscarMoviePorId(id);
+        return new ResponseEntity<>(movieGravado, HttpStatus.OK);
+    }
+
+    // http://localhost:8080/movies/1
     @PutMapping("{id}")
     public ResponseEntity<Movie> alterarMovie(@PathVariable("id") Long id, @RequestBody Movie movie) {
         movie.setId(id);
@@ -71,7 +71,7 @@ public class MovieController {
         return new ResponseEntity<>(movieAlterado, HttpStatus.OK);
     }
 
-    // http://localhost:8080/api/movies/1
+    // http://localhost:8080/movies/1
     @DeleteMapping("{id}")
     public ResponseEntity<String> removerMovie(@PathVariable("id") Long id) throws MovieNotFoundException {
         movieService.apagarMovie(id);

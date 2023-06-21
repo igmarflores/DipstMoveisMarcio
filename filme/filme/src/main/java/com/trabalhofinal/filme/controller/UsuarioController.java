@@ -15,34 +15,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.trabalhofinal.filme.exception.UserNotFoundException;
-import com.trabalhofinal.filme.model.User;
-import com.trabalhofinal.filme.service.UserService;
+import com.trabalhofinal.filme.exception.UsuarioNotFoundException;
+import com.trabalhofinal.filme.model.Usuario;
+import com.trabalhofinal.filme.service.UsuarioService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UsuarioController {
 
     @Autowired
-    private UserService userService;
+    private UsuarioService userService;
 
     @PostMapping
-    public ResponseEntity<User> criarUser(@RequestBody User user) {
-        User userGravado = userService.criarUser(user);
+    public ResponseEntity<Usuario> criarUser(@RequestBody Usuario user) {
+        Usuario userGravado = userService.criarUser(user);
         return new ResponseEntity<>(userGravado, HttpStatus.CREATED);
     }
 
     // http://localhost:8080/api/users/1
     @GetMapping("buscar/{id}")
-    public ResponseEntity<User> buscarUserPorId(@PathVariable("id") Long id) throws UserNotFoundException {
-        User userGravado = userService.buscarUserPorId(id);
+    public ResponseEntity<Usuario> buscarUserPorId(@PathVariable("id") Long id) throws UsuarioNotFoundException {
+        Usuario userGravado = userService.buscarUserPorId(id);
         return new ResponseEntity<>(userGravado, HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody User user) throws UserNotFoundException {
-        User userGravado = userService.loginUserPorEmail(user);
+    public ResponseEntity<Usuario> loginUser(@RequestBody Usuario user) throws UsuarioNotFoundException {
+        Usuario userGravado = userService.loginUserPorEmail(user);
         return new ResponseEntity<>(userGravado, HttpStatus.OK);
     }
 

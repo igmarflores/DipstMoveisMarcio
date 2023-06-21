@@ -6,19 +6,23 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.springframework.data.annotation.Id;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class User {
-    
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,12 +32,9 @@ public class User {
     private String nome;
 
     private String senha;
-  
+
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "userMovie",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    @JoinTable(name = "userMovie", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "movie_id"))
     private List<Movie> movies;
 
 }

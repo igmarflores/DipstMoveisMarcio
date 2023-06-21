@@ -4,16 +4,18 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.trabalhofinal.filme.exception.MovieNotFoundException;
 import com.trabalhofinal.filme.model.Movie;
 import com.trabalhofinal.filme.repository.MovieRepository;
 
+@Service
 public class MovieService {
-    
-    @Autowired
+
+	@Autowired
 	private MovieRepository movieRepository;
-	
+
 	public Movie criarMovie(Movie movie) {
 		return movieRepository.save(movie);
 	}
@@ -28,7 +30,7 @@ public class MovieService {
 	}
 
 	public List<Movie> buscarTodosMovies() {
-		return movieRepository.findAll(); 
+		return movieRepository.findAll();
 	}
 
 	public Movie alterarMovie(Movie movie) {
