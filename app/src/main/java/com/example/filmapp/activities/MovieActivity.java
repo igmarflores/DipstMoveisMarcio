@@ -19,7 +19,6 @@ import com.example.filmapp.R;
 import com.example.filmapp.roomdatabase.Movie;
 import com.example.filmapp.roomdatabase.MovieDataBase;
 
-
 @SuppressWarnings("ALL")
 public class MovieActivity extends AppCompatActivity {
     public EditText titulo, ano;
@@ -40,7 +39,8 @@ public class MovieActivity extends AppCompatActivity {
         btnAdicionar = findViewById(R.id.btnAdicionar);
         btnCatalogo = findViewById(R.id.btnCatalogo);
         btnExcluir= findViewById(R.id.btnDelete);
-        Movie movie = new Movie();
+        movieDB = MovieDataBase.getDataBase(getApplicationContext());
+        //Movie movie = new Movie();
         //aux = getIntent().getIntExtra("titulo",-1);
 
         //Inicializa o banco de dados
@@ -55,16 +55,13 @@ public class MovieActivity extends AppCompatActivity {
             }
         };
 
-        movieDB = Room.databaseBuilder(getApplicationContext(),
-                MovieDataBase.class,"Catalogo de filmes").allowMainThreadQueries().build();
-
         //Botão de adicionar insere o filme no BD e vai para a próxima Activity
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = titulo.getText().toString();
                 String year = ano.getText().toString();
-                //Movie movie = new Movie();
+                Movie movie = new Movie();
                 movie.setTitulo(title);
                 movie.setAno(year);
 
@@ -74,15 +71,10 @@ public class MovieActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                 }
 
-                //Se o BD nao existe/nao tem nada adicionado ainda, é impossivel atualizar, apenas inserir
-                if(movieDB == null) {
-                    movieDB.movieDAO().insertAll(movie);
-                    Toast.makeText(MovieActivity.this, "Novo filme adicionado", Toast.LENGTH_LONG).show();
-                }else{
-                    // Como que faz pra pegar o id do filme pra dps usar o update(movie)?
-                    movieDB.movieDAO().update(movie);
-                    Toast.makeText(MovieActivity.this, "Dados do filme atualizado", Toast.LENGTH_LONG).show();
-                }
+                movieDB.movieDAO().insertAll(movie);
+                Toast.makeText(MovieActivity.this, "Novo filme adicionado", Toast.LENGTH_LONG).show();
+                //movieDB.movieDAO().update(movie);
+                //Toast.makeText(MovieActivity.this, "Dados do filme atualizado", Toast.LENGTH_LONG).show();
 
                 // Limpa os dados dos campos
                 titulo.setText("");
@@ -94,13 +86,13 @@ public class MovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent it = new Intent(MovieActivity.this, Catalogo.class);
-                it.putExtra("titulo", titulo.getText());
+                it.putExtra("filme-id", -1);
                 //it.putExtra("ano", ano.getText());
                 startActivity(it);
             }
         });
 
-        btnExcluir.setOnClickListener(new View.OnClickListener() {
+        /*btnExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try{
@@ -110,6 +102,6 @@ public class MovieActivity extends AppCompatActivity {
                     Toast.makeText(MovieActivity.this, "Não é possível excluir", Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
     }
 }
