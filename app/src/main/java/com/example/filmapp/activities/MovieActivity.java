@@ -18,15 +18,14 @@ import com.example.filmapp.R;
 import com.example.filmapp.roomdatabase.Movie;
 import com.example.filmapp.roomdatabase.MovieDataBase;
 
-import java.util.List;
 
 @SuppressWarnings("ALL")
 public class MovieActivity extends AppCompatActivity {
     public EditText titulo, ano;
     public Button btnAdicionar;
+    public Button btnCatalogo;
     public TextView addFilme;
     public MovieDataBase movieDB;
-    public List<Movie> movieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +35,10 @@ public class MovieActivity extends AppCompatActivity {
         ano = findViewById(R.id.ano);
         addFilme = findViewById(R.id.addFilme);
         btnAdicionar = findViewById(R.id.btnAdicionar);
+        btnCatalogo = findViewById(R.id.btnCatalogo);
         Intent intent = getIntent();
 
+        //Inicializa o banco de dados
         RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -51,25 +52,32 @@ public class MovieActivity extends AppCompatActivity {
 
         movieDB = Room.databaseBuilder(getApplicationContext(),
                 MovieDataBase.class,"Catalogo de filmes").allowMainThreadQueries().build();
+
+        //Botão de adicionar insere o filme no BD e vai para a próxima Activity
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title = titulo.getText().toString();
                 String year = ano.getText().toString();
-                //Movie movie = new Movie(id,title,year);
                 Movie movie = new Movie();
                 movie.setTitulo(title);
                 movie.setAno(year);
                 movieDB.movieDAO().insertAll(movie);
+                Toast.makeText(MovieActivity.this, "Acidionado com sucesso", Toast.LENGTH_LONG).show();
 
-                movieList = movieDB.movieDAO().getAll();
-                StringBuilder sb = new StringBuilder();
-                for(Movie m: movieList){
-                    sb.append(m.getTitulo() + ": "+m.getAno());
-                    sb.append("\n");
-                }
-                String mensagem = sb.toString();
-                Toast.makeText(MovieActivity.this, ""+mensagem, Toast.LENGTH_LONG).show();
+                // Limpa os dados dos campos
+                titulo.setText("");
+                ano.setText("");
+            }
+        });
+
+        btnCatalogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(MovieActivity.this, Catalogo.class);
+                it.putExtra("titulo", titulo.getText());
+                //it.putExtra("ano", ano.getText());
+                startActivity(it);
             }
         });
     }

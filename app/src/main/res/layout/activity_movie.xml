@@ -16,26 +16,35 @@
             android:id="@+id/addFilme"
             android:layout_width="380dp"
             android:layout_height="51dp"
-            android:hint="Adicione filmes ao catálogo" />
+            android:hint="Adicione filmes ao catálogo"
+            tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@+id/titulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Título do filme"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/ano"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Ano de lançamento"
-            tools:ignore="TouchTargetSizeCheck" />
+            tools:ignore="TouchTargetSizeCheck"
+            android:inputType="number" />
 
         <Button
             android:id="@+id/btnAdicionar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Adicionar" />
+
+        <Button
+            android:id="@+id/btnCatalogo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver lista" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
