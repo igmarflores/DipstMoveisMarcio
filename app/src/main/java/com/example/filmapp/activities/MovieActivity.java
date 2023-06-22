@@ -7,6 +7,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,8 +25,10 @@ public class MovieActivity extends AppCompatActivity {
     public EditText titulo, ano;
     public Button btnAdicionar;
     public Button btnCatalogo;
+    public Button btnExcluir;
     public TextView addFilme;
     public MovieDataBase movieDB;
+    //public Movie aux;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,9 @@ public class MovieActivity extends AppCompatActivity {
         addFilme = findViewById(R.id.addFilme);
         btnAdicionar = findViewById(R.id.btnAdicionar);
         btnCatalogo = findViewById(R.id.btnCatalogo);
-        Intent intent = getIntent();
+        btnExcluir= findViewById(R.id.btnDelete);
+        Movie movie = new Movie();
+        //aux = getIntent().getIntExtra("titulo",-1);
 
         //Inicializa o banco de dados
         RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
@@ -59,11 +64,25 @@ public class MovieActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title = titulo.getText().toString();
                 String year = ano.getText().toString();
-                Movie movie = new Movie();
+                //Movie movie = new Movie();
                 movie.setTitulo(title);
                 movie.setAno(year);
-                movieDB.movieDAO().insertAll(movie);
-                Toast.makeText(MovieActivity.this, "Acidionado com sucesso", Toast.LENGTH_LONG).show();
+
+                //Valida se os campos nao estao vazios
+                if(titulo.equals("") || ano.equals("")){
+                    Toast.makeText(MovieActivity.this, "Preencher os campos é obrigatório",
+                            Toast.LENGTH_LONG).show();
+                }
+
+                //Se o BD nao existe/nao tem nada adicionado ainda, é impossivel atualizar, apenas inserir
+                if(movieDB == null) {
+                    movieDB.movieDAO().insertAll(movie);
+                    Toast.makeText(MovieActivity.this, "Novo filme adicionado", Toast.LENGTH_LONG).show();
+                }else{
+                    // Como que faz pra pegar o id do filme pra dps usar o update(movie)?
+                    movieDB.movieDAO().update(movie);
+                    Toast.makeText(MovieActivity.this, "Dados do filme atualizado", Toast.LENGTH_LONG).show();
+                }
 
                 // Limpa os dados dos campos
                 titulo.setText("");
@@ -78,6 +97,18 @@ public class MovieActivity extends AppCompatActivity {
                 it.putExtra("titulo", titulo.getText());
                 //it.putExtra("ano", ano.getText());
                 startActivity(it);
+            }
+        });
+
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    movieDB.movieDAO().delete(movie);
+                    Toast.makeText(MovieActivity.this, "Filme excluído", Toast.LENGTH_LONG).show();
+                }catch(SQLiteConstraintException e){
+                    Toast.makeText(MovieActivity.this, "Não é possível excluir", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

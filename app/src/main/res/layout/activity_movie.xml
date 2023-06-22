@@ -16,7 +16,7 @@
             android:id="@+id/addFilme"
             android:layout_width="380dp"
             android:layout_height="51dp"
-            android:hint="Adicione filmes ao catálogo"
+            android:hint=""
             tools:ignore="HardcodedText" />
 
         <EditText
@@ -39,12 +39,18 @@
             android:id="@+id/btnAdicionar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Adicionar" />
+            android:text="Salvar" />
 
         <Button
             android:id="@+id/btnCatalogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ver lista" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Excluir" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

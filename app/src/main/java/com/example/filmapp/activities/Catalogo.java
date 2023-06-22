@@ -34,14 +34,14 @@ public class Catalogo extends AppCompatActivity {
         setContentView(R.layout.activity_catalogo);
         txtCatalogo = findViewById(R.id.txtCatalogo);
         listaFilme = findViewById(R.id.listaFilme);
-        //Intent it = getIntent();
+        Intent it = getIntent();
     }
-    @Override
+    /*@Override
     protected void onResume(){
         super.onResume();
         it = new Intent(this, MovieActivity.class);
         insereFilmesLista();
-    }
+    }*/
 
     private void insereFilmesLista(){
         movieList = movieDB.movieDAO().getAll();
@@ -53,10 +53,11 @@ public class Catalogo extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 filme = movieList.get(i);
-                //it = new Intent(Catalogo.this, MovieActivity.class);
+                it = new Intent(Catalogo.this, MovieActivity.class);
                 it.putExtra("titulo", filme.getId());
                 startActivity(it);
             }
         });
+
     }
 }
