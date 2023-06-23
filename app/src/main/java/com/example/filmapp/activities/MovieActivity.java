@@ -1,107 +1,97 @@
 package com.example.filmapp.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
-import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
-
 import com.example.filmapp.R;
-import com.example.filmapp.roomdatabase.Movie;
-import com.example.filmapp.roomdatabase.MovieDataBase;
 
-@SuppressWarnings("ALL")
+import androidx.appcompat.app.AppCompatActivity;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MovieActivity extends AppCompatActivity {
-    public EditText titulo, ano;
-    public Button btnAdicionar;
-    public Button btnCatalogo;
-    public Button btnExcluir;
-    public TextView addFilme;
-    public MovieDataBase movieDB;
-    //public Movie aux;
+
+    private ListView movieListView;
+    private List<String> movieTitles = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
-        titulo = findViewById(R.id.titulo);
-        ano = findViewById(R.id.ano);
-        addFilme = findViewById(R.id.addFilme);
-        btnAdicionar = findViewById(R.id.btnAdicionar);
-        btnCatalogo = findViewById(R.id.btnCatalogo);
-        btnExcluir= findViewById(R.id.btnDelete);
-        movieDB = MovieDataBase.getDataBase(getApplicationContext());
-        //Movie movie = new Movie();
-        //aux = getIntent().getIntExtra("titulo",-1);
 
-        //Inicializa o banco de dados
-        RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
+        movieListView = findViewById(R.id.movieListView);
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, movieTitles);
+        movieListView.setAdapter(adapter);
+
+        movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                super.onCreate(db);
-            }
-            @Override
-            public void onOpen(@NonNull SupportSQLiteDatabase db) {
-                super.onOpen(db);
-            }
-        };
-
-        //Botão de adicionar insere o filme no BD e vai para a próxima Activity
-        btnAdicionar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String title = titulo.getText().toString();
-                String year = ano.getText().toString();
-                Movie movie = new Movie();
-                movie.setTitulo(title);
-                movie.setAno(year);
-
-                //Valida se os campos nao estao vazios
-                if(titulo.equals("") || ano.equals("")){
-                    Toast.makeText(MovieActivity.this, "Preencher os campos é obrigatório",
-                            Toast.LENGTH_LONG).show();
-                }
-
-                movieDB.movieDAO().insertAll(movie);
-                Toast.makeText(MovieActivity.this, "Novo filme adicionado", Toast.LENGTH_LONG).show();
-                //movieDB.movieDAO().update(movie);
-                //Toast.makeText(MovieActivity.this, "Dados do filme atualizado", Toast.LENGTH_LONG).show();
-
-                // Limpa os dados dos campos
-                titulo.setText("");
-                ano.setText("");
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMovie = movieTitles.get(position);
+                Toast.makeText(MovieActivity.this, "Você selecionou: " + selectedMovie, Toast.LENGTH_SHORT).show();
             }
         });
 
-        btnCatalogo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent it = new Intent(MovieActivity.this, Catalogo.class);
-                it.putExtra("filme-id", -1);
-                //it.putExtra("ano", ano.getText());
-                startActivity(it);
-            }
-        });
+        new FetchMoviesTask().execute();
+    }
 
-        /*btnExcluir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try{
-                    movieDB.movieDAO().delete(movie);
-                    Toast.makeText(MovieActivity.this, "Filme excluído", Toast.LENGTH_LONG).show();
-                }catch(SQLiteConstraintException e){
-                    Toast.makeText(MovieActivity.this, "Não é possível excluir", Toast.LENGTH_LONG).show();
+    private class FetchMoviesTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/movie/popular?api_key=b7165c42722d26bcc9a3377dd3cb0ffd")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                if (response.isSuccessful()) {
+                    return response.body().string();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        });*/
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String response) {
+            if (response != null) {
+                try {
+                    JSONObject json = new JSONObject(response);
+                    JSONArray results = json.getJSONArray("results");
+
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject movie = results.getJSONObject(i);
+                        String title = movie.getString("title");
+                        movieTitles.add(title);
+                    }
+
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(MovieActivity.this, "Falha ao obter filmes.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
