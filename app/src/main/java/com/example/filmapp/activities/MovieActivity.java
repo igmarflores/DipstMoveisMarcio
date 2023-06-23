@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import com.example.filmapp.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,11 +32,11 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_catalog);
+        setContentView(R.layout.activity_movie);
 
         movieListView = findViewById(R.id.movieListView);
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, movieTitles);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, movieTitles);
         movieListView.setAdapter(adapter);
 
         movieListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -56,7 +57,7 @@ public class MovieActivity extends AppCompatActivity {
             OkHttpClient client = new OkHttpClient();
 
             Request request = new Request.Builder()
-                    .url("https://api.themoviedb.org/3/movie/popular?api_key=CHAVE")
+                    .url("https://api.themoviedb.org/3/movie/popular?api_key=b7165c42722d26bcc9a3377dd3cb0ffd")
                     .build();
 
             try {
