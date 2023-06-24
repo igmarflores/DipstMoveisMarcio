@@ -12,45 +12,11 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/addFilme"
-            android:layout_width="380dp"
-            android:layout_height="51dp"
-            android:hint=""
-            tools:ignore="HardcodedText" />
-
-        <EditText
-            android:id="@+id/titulo"
+        <ListView
+            android:id="@+id/movieListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Título do filme"
-            tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck"
-            android:inputType="text" />
+            android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/ano"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ano de lançamento"
-            tools:ignore="TouchTargetSizeCheck"
-            android:inputType="number" />
-
-        <Button
-            android:id="@+id/btnAdicionar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Salvar" />
-
-        <Button
-            android:id="@+id/btnCatalogo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ver lista" />
-
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Excluir" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

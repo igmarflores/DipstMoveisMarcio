@@ -1,78 +1,44 @@
 package com.example.filmapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
-import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.filmapp.R;
-import com.example.filmapp.roomdatabase.Movie;
-import com.example.filmapp.roomdatabase.MovieDataBase;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class Catalogo extends AppCompatActivity {
-    public TextView txtCatalogo;
-    private ListView listaFilme;
-    private List<Movie> movieList = new ArrayList<>();
-    private ArrayAdapter<Movie> movieArrayAdapter;
-    MovieDataBase movieDB;
-    int movieID;
-    Movie filme;
-    private Intent it;
+public class Catalogo extends RecyclerView.Adapter<Catalogo.FilmeViewHolder> {
+    private ArrayList<Object> listaFilmes;
 
+    public Catalogo(ArrayList<Object> listaFilmes) {
+        this.listaFilmes = listaFilmes;
+    }
 
-    //@SuppressLint("MissingInflatedId")
+    @NonNull
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_catalogo);
-        txtCatalogo = findViewById(R.id.txtCatalogo);
-        listaFilme = findViewById(R.id.listaFilme);
-        movieDB = MovieDataBase.getDataBase(getApplicationContext());
-        movieID = getIntent().getIntExtra("filme-id", -1);
+    public FilmeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_catalogo, parent, false);
+        return new FilmeViewHolder(view);
     }
 
     @Override
-    protected void onResume(){
-        super.onResume();
-        if(movieID >=0){
-            getMovieID();
-        }
-        else{
-            Toast.makeText(Catalogo.this, "Filme inválido ou inexistente", Toast.LENGTH_LONG).show();;
-        }
-        insereFilmesLista();
-    }
-    public void getMovieID(){
-        filme = movieDB.movieDAO().getMovie(movieID);
-    }
-    public void insereFilmesLista(){
-        movieList = movieDB.movieDAO().getAll();
-        movieArrayAdapter = new ArrayAdapter<>(Catalogo.this, android.R.layout.simple_list_item_1,
-                movieList);
-        listaFilme.setAdapter(movieArrayAdapter);
-
-        listaFilme.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Movie filme = movieList.get(i);
-                it = new Intent(Catalogo.this, MovieActivity.class);
-                it.putExtra("id-filme", filme.getId());
-                it.putExtra("titulo-filme", filme.getTitulo());
-                it.putExtra("ano-filme",filme.getAno());
-                startActivity(it);
-            }
-        });
+    public void onBindViewHolder(@NonNull FilmeViewHolder holder, int position) {
+        // Implementação do onBind para atualizar os dados do item do RecyclerView
     }
 
-    /*public void voltar(View view){
-        finish();
-    }*/
+    @Override
+    public int getItemCount() {
+        return listaFilmes.size();
+    }
+
+    public static class FilmeViewHolder extends RecyclerView.ViewHolder {
+        public FilmeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            // Inicializar os componentes do item do RecyclerView aqui
+        }
+    }
 }
