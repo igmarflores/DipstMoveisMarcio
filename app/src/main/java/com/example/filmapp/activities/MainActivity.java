@@ -1,6 +1,9 @@
 package com.example.filmapp.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.database.sqlite.SQLiteDatabase;
 import com.example.filmapp.R;
+import com.example.filmapp.roomdatabase.Movie;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 //String inputUsername = editTextUsername.getText().toString();
                 //String inputPassword = editTextPassword.getText().toString();
                 Intent it = new Intent(MainActivity.this, MovieActivity.class);
+                //it.putExtra("id-filme");
                 startActivity(it);
             }
         });
