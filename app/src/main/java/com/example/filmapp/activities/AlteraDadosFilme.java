@@ -110,3 +110,4 @@ public class AlteraDadosFilme extends AppCompatActivity {
     public void voltar(View v){
         finish();
     }
+}
