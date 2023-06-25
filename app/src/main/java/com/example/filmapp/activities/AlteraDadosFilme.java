@@ -34,14 +34,15 @@ public class AlteraDadosFilme extends AppCompatActivity {
         btnVoltar = findViewById(R.id.btnVoltar);
         btnExcluir = findViewById(R.id.btnDelete);
         movieDB = MovieDataBase.getDataBase(getApplicationContext());
-        movieID = getIntent().getIntExtra("id-filme",-1);
+        movieID = getIntent().getIntExtra("id-filme", -1);
 
-        //Inicializa o banco de dados
+        // Inicializa o banco de dados
         RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
             }
+
             @Override
             public void onOpen(@NonNull SupportSQLiteDatabase db) {
                 super.onOpen(db);
@@ -50,49 +51,48 @@ public class AlteraDadosFilme extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
-        /* Se o filme já existe no banco então pega os dados deste filme em específico.
-           Senão quer dizer que a inserção será feita e portanto faça sumir o botão de excluir
-           e troque o texto do botão de 'Alterar' para 'Salvar'
-        * */
-        if(movieID >= 0)
+        /* Se o filme já existe no banco, então pega os dados deste filme em específico.
+           Senão, quer dizer que a inserção será feita e, portanto, esconde o botão de excluir
+           e altera o texto do botão de 'Alterar' para 'Salvar'
+        */
+        if (movieID >= 0)
             getMovie();
-        else{
+        else {
             btnExcluir.setVisibility(View.GONE);
             btnSalvar.setText("Salvar");
         }
     }
 
-    public void getMovie(){
+    public void getMovie() {
         filmeDB = movieDB.movieDAO().getMovie(movieID);
         titulo.setText(filmeDB.getTitulo());
         ano.setText(filmeDB.getAno());
     }
 
-    public void movieUpdate(View view){
+    public void movieUpdate(View view) {
         String title = titulo.getText().toString();
         String year = ano.getText().toString();
 
-        //Valida se os campos nao estao vazios
-        if (title.equals("") || year.equals("")) {
-            Toast.makeText(AlteraDadosFilme.this, "Preencher os campos é obrigatório",
+        // Valida se os campos não estão vazios
+        if (title.isEmpty() || year.isEmpty()) {
+            Toast.makeText(AlteraDadosFilme.this, "Preencher todos os campos é obrigatório",
                     Toast.LENGTH_LONG).show();
-            return ;
+            return;
         }
 
         Movie movie = new Movie();
+        movie.setId(movieID);
         movie.setTitulo(title);
         movie.setAno(year);
 
-        //Se o filme já existe então será um update, caso contrário será um insert
-        if (filmeDB != null){
-            movie.setId(movieID);
+        if (filmeDB != null) {
             movieDB.movieDAO().update(movie);
-            Toast.makeText(AlteraDadosFilme.this, "Dados do filme atualizado",
+            Toast.makeText(AlteraDadosFilme.this, "Dados do filme atualizados",
                     Toast.LENGTH_LONG).show();
             finish();
-        }else{
+        } else {
             movieDB.movieDAO().insertAll(movie);
             Toast.makeText(AlteraDadosFilme.this, "Novo filme adicionado",
                     Toast.LENGTH_LONG).show();
@@ -101,13 +101,4 @@ public class AlteraDadosFilme extends AppCompatActivity {
             ano.setText("");
         }
     }
-
-    public void movieDelete(View view){
-        movieDB.movieDAO().delete(filmeDB);
-        Toast.makeText(AlteraDadosFilme.this, "Filme excluído",
-                Toast.LENGTH_LONG).show();
-        finish();
-    }
-    public void voltar(View v){
-        finish();
-    }
+}

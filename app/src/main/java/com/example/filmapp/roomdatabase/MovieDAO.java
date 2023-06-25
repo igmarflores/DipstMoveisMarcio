@@ -15,6 +15,9 @@ public interface MovieDAO {
     @Query("SELECT * FROM Filme")
     List<Movie> getAll();
 
+    @Query("SELECT * FROM Filme INNER JOIN Genero ON Filme.genero_id = Genero.id WHERE Genero.nome = :genreName")
+    List<Movie> getMoviesByGenre(String genreName);
+
     @Insert
     void insertAll(Movie... movies);
 
