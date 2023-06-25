@@ -54,12 +54,13 @@
                             android:drawableBottom="@android:drawable/ic_menu_edit"
                             android:onClick="movieUpdate"
                             android:text="Alterar" />
+
                         <Button
                             android:id="@+id/btnDelete"
                             android:layout_width="191dp"
                             android:layout_height="wrap_content"
                             android:backgroundTint="#F44336"
-                            android:drawableBottom="@android:drawable/ic_delete"
+                            android:drawableBottom="@android:drawable/ic_menu_delete"
                             android:onClick="movieDelete"
                             android:text="Excluir" />
                 </LinearLayout>
