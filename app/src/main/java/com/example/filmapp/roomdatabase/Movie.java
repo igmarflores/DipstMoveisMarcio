@@ -44,6 +44,6 @@ public class Movie {
 
     @Override
     public String toString(){
-        return "id:"+this.id+" "+ this.titulo+"-"+this.ano;
+        return "Título: "+this.titulo+" - Ano de lançamento: "+this.ano;
     }
 }

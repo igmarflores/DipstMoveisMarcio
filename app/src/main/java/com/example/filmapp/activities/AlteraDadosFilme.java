@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
-import android.view.ContextMenu;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +16,7 @@ import com.example.filmapp.roomdatabase.MovieDataBase;
 
 public class AlteraDadosFilme extends AppCompatActivity {
     public EditText titulo, ano;
-    public Button btnSalvar, btnExcluir, btnVoltar;
+    public Button btnSalvar, btnExcluir;
     public TextView addFilme;
     public MovieDataBase movieDB;
     public Movie filmeDB;
@@ -31,12 +30,12 @@ public class AlteraDadosFilme extends AppCompatActivity {
         ano = findViewById(R.id.ano);
         addFilme = findViewById(R.id.addFilme);
         btnSalvar = findViewById(R.id.btnSalvar);
-        btnVoltar = findViewById(R.id.btnVoltar);
+        //btnVoltar = findViewById(R.id.btnVoltar);
         btnExcluir = findViewById(R.id.btnDelete);
         movieDB = MovieDataBase.getDataBase(getApplicationContext());
         movieID = getIntent().getIntExtra("id-filme",-1);
 
-        //Inicializa o banco de dados
+        /*Inicializa o banco de dados
         RoomDatabase.Callback myCallBack = new RoomDatabase.Callback() {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -46,7 +45,7 @@ public class AlteraDadosFilme extends AppCompatActivity {
             public void onOpen(@NonNull SupportSQLiteDatabase db) {
                 super.onOpen(db);
             }
-        };
+        };*/
     }
 
     @Override

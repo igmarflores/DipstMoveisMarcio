@@ -10,14 +10,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            tools:layout_editor_absoluteX="-78dp"
+            tools:layout_editor_absoluteY="-48dp">
 
                 <TextView
                     android:id="@+id/addFilme"
-                    android:layout_width="380dp"
-                    android:layout_height="51dp"
-                    android:hint="Dados do filme"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="         Dados do filme"
+                    android:textColor="@color/black"
                     android:textSize="35sp"
+                    android:textStyle="bold"
                     tools:ignore="HardcodedText" />
 
                 <EditText
@@ -25,35 +30,65 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Título do filme"
-                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill,HardcodedText,TouchTargetSizeCheck" />
 
                 <EditText
                     android:id="@+id/ano"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Ano de lançamento"
-                    tools:ignore="TouchTargetSizeCheck"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    tools:ignore="TouchTargetSizeCheck" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                <Button
-                    android:id="@+id/btnSalvar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Alterar"
-                    android:onClick="movieUpdate"/>
-                <Button
-                    android:id="@+id/btnDelete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Excluir"
-                    android:onClick="movieDelete"/>
+                        <Button
+                            android:id="@+id/btnSalvar"
+                            android:layout_width="187dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#2196F3"
+                            android:drawableBottom="@android:drawable/ic_menu_edit"
+                            android:onClick="movieUpdate"
+                            android:text="Alterar" />
+                        <Button
+                            android:id="@+id/btnDelete"
+                            android:layout_width="191dp"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#F44336"
+                            android:drawableBottom="@android:drawable/ic_delete"
+                            android:onClick="movieDelete"
+                            android:text="Excluir" />
+                </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnVoltar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Voltar"
-                    android:onClick="voltar"/>
         </LinearLayout>
+
+        <!--<Button
+            android:id="@+id/btnVoltar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableBottom="@android:drawable/ic_menu_revert"
+            android:onClick="voltar"
+            android:text="Voltar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" /> -->
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="176dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="voltarFab"
+            android:onClick="voltar"
+            app:backgroundTint="#3F51B5"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_revert" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
