@@ -39,4 +39,3 @@ tools:context=".activities.AlteraDadosFilme">
     app:layout_constraintTop_toBottomOf="@+id/listaFilme" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
