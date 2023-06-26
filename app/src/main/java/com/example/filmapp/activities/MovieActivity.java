@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -30,6 +33,7 @@ public class MovieActivity extends AppCompatActivity {
         txtCatalogo = findViewById(R.id.txtCatalogo);
         listaFilme = findViewById(R.id.listaFilme);
         movieDB = MovieDataBase.getDataBase(getApplicationContext());
+        registerForContextMenu(listaFilme);
     }
 
     @Override
@@ -38,6 +42,18 @@ public class MovieActivity extends AppCompatActivity {
         it = new Intent(MovieActivity.this, AlteraDadosFilme.class);
         insereFilmesLista();
     }
+
+    /*
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        MenuItem menuDelete = menu.add(Menu.NONE, 1,1, "Excluir");
+        MenuItem menuBack = menu.add(Menu.NONE, 1,1, "Voltar");
+
+        menuDelete.setOnMenuItemClickListener();
+        menuBack.setOnMenuItemClickListener();
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }*/
+
 
     // Insere o que o usuário digitou no banco de dados e também no ArrayList de filmes
     public void insereFilmesLista() {

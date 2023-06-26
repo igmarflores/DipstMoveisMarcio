@@ -1,5 +1,6 @@
 package com.example.filmapp.roomdatabase;
 import androidx.room.ColumnInfo;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,6 +12,8 @@ public class Movie {
     String titulo;
     @ColumnInfo(name = "ano")
     String ano;
+
+    //@Embedded Genre genero;
     public Movie(){}
     public Movie(int id, String titulo, String ano) {
         this.id = id;
@@ -44,6 +47,6 @@ public class Movie {
 
     @Override
     public String toString(){
-        return "id:"+this.id+" "+ this.titulo+"-"+this.ano;
+        return "Título: "+this.titulo+" - Ano de lançamento: "+this.ano;
     }
 }
